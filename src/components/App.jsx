@@ -19,7 +19,7 @@ class App extends React.Component {
     };
     // this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
   }
-  onVideoListEntryClick() {
+  onVideoListEntryClick(video) {
     this.setState({
       currentVideo: video
     });
@@ -34,7 +34,10 @@ class App extends React.Component {
           <VideoPlayer video={this.state.currentVideo}/>
         </div>
         <div className="col-md-5">
-          <VideoList videos={exampleVideoData}/>
+          <VideoList
+            videos={exampleVideoData}
+            onVideoListEntryClick={this.onVideoListEntryClick.bind(this)}
+          />
         </div>
       </div>
     );
