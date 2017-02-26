@@ -1,24 +1,30 @@
-// var App = () => (
-//   <div>
-//     <Nav />
-//     <div className="col-md-7">
-//       <VideoPlayer video={exampleVideoData[0]}/>
-//     </div>
-//     <div className="col-md-5">
-//       <VideoList videos={exampleVideoData}/>
-//     </div>
-//         </div>
-//         );
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentVideo: exampleVideoData[0],   // null?
-      videoList: exampleVideoData     // ?
+      currentVideo: exampleVideoData[0],
+      videoList: exampleVideoData
     };
-    // this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
   }
+
+  componentDidMount() {
+    this.getYouTubeVideos('civilization 6');
+  }
+
+  getYouTubeVideos(query) {
+    var options = {
+      key: this.props.API_KEY,
+      query: query
+    };
+
+    this.props.searchYouTube(options, (videos) => {
+      this.setState({
+        currentVideo: videos[0],
+        videoList: videos
+      });
+    });
+  }
+
   onVideoListEntryClick(video) {
     this.setState({
       currentVideo: video
@@ -26,16 +32,16 @@ class App extends React.Component {
   }
 
   render() {
-
+    console.log(this.props);
     return (
       <div>
-        <Nav />
+        <Nav onSearchInputChange={this.getYouTubeVideos.bind(this)}/>
         <div className="col-md-7">
           <VideoPlayer video={this.state.currentVideo}/>
         </div>
         <div className="col-md-5">
           <VideoList
-            videos={exampleVideoData}
+            videos={this.state.videoList}
             onVideoListEntryClick={this.onVideoListEntryClick.bind(this)}
           />
         </div>
